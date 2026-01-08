@@ -21,7 +21,7 @@
         ε = 0.1 * r
         for j in 1:2, i in 1:3
 
-            @test solution[1][i, j] ≈ solution[end][i, j] atol = ε
+            @test solution.u[1][i, j] ≈ solution.u[end][i, j] atol = ε
         end
 
         (

@@ -16,7 +16,7 @@ using OrdinaryDiffEq
         ε = 0.1
         for j in 1:3, i in 1:3
 
-            @test solution_simo_3[1][i, j] ≈ solution_simo_3[end][i, j] atol = ε
+            @test solution_simo_3.u[1][i, j] ≈ solution_simo_3.u[end][i, j] atol = ε
         end
 
         @testset "Analyzing simulation result" begin
@@ -42,7 +42,7 @@ using OrdinaryDiffEq
             ε = 0.001
             for i in 1:3, j in 1:3
 
-                @test solution_simo_3_2nd[1][9 + 3(i - 1) + j] ≈ solution_simo_3_2nd[end][9 + 3(i - 1) + j] atol = ε
+                @test solution_simo_3_2nd.u[1][9 + 3(i - 1) + j] ≈ solution_simo_3_2nd.u[end][9 + 3(i - 1) + j] atol = ε
             end
         end
 
@@ -52,7 +52,7 @@ using OrdinaryDiffEq
             ε = 0.001
             for i in 1:3, j in 1:3
 
-                @test solution_simo_3_2nd[1][9 + 3(i - 1) + j] ≈ solution_simo_3_2nd[end][9 + 3(i - 1) + j] atol = ε
+                @test solution_simo_3_2nd.u[1][9 + 3(i - 1) + j] ≈ solution_simo_3_2nd.u[end][9 + 3(i - 1) + j] atol = ε
             end
 
             sim_result = run_simulation(simulation, Yoshida6(), dt = pi / 12)
@@ -60,7 +60,7 @@ using OrdinaryDiffEq
             ε = 0.001
             for i in 1:3, j in 1:3
 
-                @test solution_simo_3_2nd[1][9 + 3(i - 1) + j] ≈ solution_simo_3_2nd[end][9 + 3(i - 1) + j] atol = ε
+                @test solution_simo_3_2nd.u[1][9 + 3(i - 1) + j] ≈ solution_simo_3_2nd.u[end][9 + 3(i - 1) + j] atol = ε
             end
         end
     end
@@ -92,7 +92,7 @@ using OrdinaryDiffEq
         ε = 0.01
         for j in 1:5, i in 1:3
 
-            @test solution_simo_5[1][i, j] ≈ solution_simo_5[end][i, j] atol = ε
+            @test solution_simo_5.u[1][i, j] ≈ solution_simo_5.u[end][i, j] atol = ε
         end
     end
 
