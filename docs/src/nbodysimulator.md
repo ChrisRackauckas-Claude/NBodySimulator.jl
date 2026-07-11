@@ -60,6 +60,9 @@ WaterSPCFw
 
 ```@docs
 NBodySimulator.SimulationResult
+get_position
+get_velocity
+get_masses
 temperature
 rdf
 msd
@@ -74,4 +77,8 @@ total_energy
 ```@docs
 load_water_molecules_from_pdb
 save_to_pdb
+```
+
+```@autodocs
+Modules = [NBodySimulator]
 ```

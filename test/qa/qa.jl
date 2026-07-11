@@ -3,6 +3,15 @@ using SciMLTesting, NBodySimulator, JET, Test
 run_qa(
     NBodySimulator;
     explicit_imports = true,
+    api_docs_kwargs = (;
+        rendered = true,
+        # These are dependency reexports that lack source docstrings upstream.
+        ignore = (
+            :DEFAULT_PLOT_FUNC, :DefaultODEAlgorithm, :add_labels!, :plot_indices,
+            :plottable_indices, :recursive_bottom_eltype, :recursive_mean,
+            :solplot_vecs_and_labels, :tuples, :vecarr_to_vectors, :vecvec_to_mat,
+        ),
+    ),
     # Aqua sub-checks tracked-broken in https://github.com/SciML/NBodySimulator.jl/issues/117:
     #   stale_deps:   JLArrays declared in [deps] but unused in src/
     #   deps_compat:  Printf, Random (used in src/) lack [compat] bounds

@@ -10,15 +10,30 @@ Bodies or Particles are the objects that will interact with each other and for w
 """
 abstract type Body end
 
+"""
+    MassBody(r, v, m)
+
+Particle with position `r`, velocity `v`, and mass `m`.
+"""
 struct MassBody{cType <: Real, mType <: Real} <: Body
     @position_velocity_mass
 end
 
+"""
+    ChargedParticle(r, v, m, q)
+
+Particle with position `r`, velocity `v`, mass `m`, and charge `q`.
+"""
 struct ChargedParticle{cType <: Real, mType <: Real, qType <: Real} <: Body
     @position_velocity_mass
     q::qType
 end
 
+"""
+    MagneticParticle(r, v, m, mm)
+
+Particle with position `r`, velocity `v`, mass `m`, and magnetic moment `mm`.
+"""
 struct MagneticParticle{cType <: Real, mType <: Real, mmType <: Real} <: Body
     @position_velocity_mass
     mm::SVector{3, mmType}

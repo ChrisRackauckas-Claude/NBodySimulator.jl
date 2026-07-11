@@ -3,6 +3,11 @@ The potentials or force field determines the interaction of particles and, there
 """
 abstract type PotentialParameters end
 
+"""
+    LennardJonesParameters(ϵ, σ, R)
+
+Lennard-Jones potential parameters with energy scale `ϵ`, length scale `σ`, and cutoff `R`.
+"""
 struct LennardJonesParameters{pType <: Real} <: PotentialParameters
     ϵ::pType
     σ::pType
@@ -32,6 +37,11 @@ function Base.show(stream::IO, pp::LennardJonesParameters)
     return println(stream)
 end
 
+"""
+    GravitationalParameters(G)
+
+Gravitational interaction parameters with gravitational constant `G`.
+"""
 struct GravitationalParameters{gType <: Real} <: PotentialParameters
     G::gType
 end
@@ -47,6 +57,11 @@ function Base.show(stream::IO, pp::GravitationalParameters)
     return println(stream)
 end
 
+"""
+    ElectrostaticParameters(k, R)
+
+Electrostatic interaction parameters with Coulomb constant `k` and cutoff `R`.
+"""
 struct ElectrostaticParameters{pType <: Real} <: PotentialParameters
     k::pType
     R::pType
@@ -72,6 +87,11 @@ function Base.show(stream::IO, pp::ElectrostaticParameters)
     return println(stream)
 end
 
+"""
+    MagnetostaticParameters(μ_4π)
+
+Magnetostatic interaction parameters storing `μ / 4π`.
+"""
 struct MagnetostaticParameters{mType <: Real} <: PotentialParameters
     μ_4π::mType
 end
@@ -87,6 +107,11 @@ function Base.show(stream::IO, pp::MagnetostaticParameters)
     return println(stream)
 end
 
+"""
+    SPCFwParameters(rOH, aHOH, kb, ka)
+
+SPC/Fw water-model parameters for bond length, bond angle, bond stiffness, and angle stiffness.
+"""
 struct SPCFwParameters{pType <: Real} <: PotentialParameters
     rOH::pType
     aHOH::pType

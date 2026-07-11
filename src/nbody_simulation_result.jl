@@ -29,6 +29,11 @@ function Base.iterate(sr::SimulationResult, state = 1)
     return (sr, sr.solution.t[state]), state + 1
 end
 
+"""
+    get_velocity(result::SimulationResult, time, i = 0)
+
+Return all particle velocities at `time`, or the velocity of particle `i` when `i > 0`.
+"""
 function get_velocity(sr::SimulationResult, time::Real, i::Integer = 0)
     n = get_coordinate_vector_count(sr.simulation.system)
 
@@ -53,6 +58,11 @@ function get_velocity(sr::SimulationResult, time::Real, i::Integer = 0)
     end
 end
 
+"""
+    get_position(result::SimulationResult, time, i = 0)
+
+Return all particle positions at `time`, or the position of particle `i` when `i > 0`.
+"""
 function get_position(sr::SimulationResult, time::Real, i::Integer = 0)
     if sr.solution.u[1] isa RecursiveArrayTools.ArrayPartition
         positions = sr(time).x[2]
@@ -69,6 +79,11 @@ function get_position(sr::SimulationResult, time::Real, i::Integer = 0)
     end
 end
 
+"""
+    get_masses(system::NBodySystem)
+
+Return the particle masses for `system` in simulation-coordinate order.
+"""
 function get_masses(system::NBodySystem)
     n = length(system.bodies)
     masses = zeros(typeof(first(system.bodies).m), n)
@@ -114,6 +129,11 @@ function get_degrees_of_freedom(system::WaterSPCFw)
     return (n, nc, ndf)
 end
 
+"""
+    temperature(result::SimulationResult, time)
+
+Compute the system temperature at `time`.
+"""
 function temperature(result::SimulationResult, time::Real)
     kb = result.simulation.kb
     (n, nc, ndf) = get_degrees_of_freedom(result.simulation.system)
@@ -122,6 +142,12 @@ function temperature(result::SimulationResult, time::Real)
     return md_temperature(vs, ms, kb, n, nc)
 end
 
+"""
+    kinetic_energy(velocities, masses)
+    kinetic_energy(result::SimulationResult, time)
+
+Compute kinetic energy from velocity and mass arrays or from a simulation result at `time`.
+"""
 function kinetic_energy(velocities, masses)
     ke = sum(dot(vec(sum(velocities .^ 2, dims = 1)), masses / 2))
     return ke
@@ -133,6 +159,12 @@ function kinetic_energy(sr::SimulationResult, time::Real)
     return kinetic_energy(vs, ms)
 end
 
+"""
+    potential_energy(coordinates, simulation::NBodySimulation)
+    potential_energy(result::SimulationResult, time)
+
+Compute potential energy from coordinates and simulation parameters or from a result at `time`.
+"""
 function potential_energy(coordinates, simulation::NBodySimulation)
     e_potential = 0
     system = simulation.system
@@ -299,12 +331,22 @@ function potential_energy(sr::SimulationResult, time::Real)
     return potential_energy(coordinates, sr.simulation)
 end
 
+"""
+    total_energy(result::SimulationResult, time)
+
+Compute kinetic plus potential energy at `time`.
+"""
 function total_energy(sr::SimulationResult, time::Real)
     e_kin = kinetic_energy(sr, time)
     e_pot = potential_energy(sr, time)
     return e_kin + e_pot
 end
 
+"""
+    initial_energy(simulation::NBodySimulation)
+
+Compute the total energy of the simulation initial condition.
+"""
 function initial_energy(simulation::NBodySimulation)
     (u0, v0, n) = gather_bodies_initial_coordinates(simulation)
     ms = get_masses(simulation.system)
@@ -491,6 +533,11 @@ end
     end
 end
 
+"""
+    rdf(result::SimulationResult)
+
+Compute the radial distribution function from a simulation result.
+"""
 function rdf(sr::SimulationResult)
     n = length(sr.simulation.system.bodies)
     pbc = sr.simulation.boundary_conditions
@@ -538,6 +585,11 @@ function rdf(sr::SimulationResult)
     return (rs, gr)
 end
 
+"""
+    msd(result::SimulationResult)
+
+Compute the mean squared displacement over the saved solution times.
+"""
 function msd(sr::SimulationResult{<:PotentialNBodySystem})
     n = length(sr.simulation.system.bodies)
 

@@ -8,11 +8,21 @@ No thermostat.
 struct NullThermostat <: Thermostat
 end
 
+"""
+    AndersenThermostat(T, ν)
+
+Andersen thermostat targeting temperature `T` with collision frequency `ν`.
+"""
 struct AndersenThermostat{tType <: Real, νType <: Real} <: Thermostat
     T::tType
     ν::νType
 end
 
+"""
+    BerendsenThermostat(T, τ)
+
+Berendsen thermostat targeting temperature `T` with coupling time `τ`.
+"""
 struct BerendsenThermostat{τType <: Real, tType <: Real} <: Thermostat
     T::tType
     τ::τType
@@ -40,6 +50,11 @@ function md_temperature(vs, ms, kb, N, Nc)
     return temperature
 end
 
+"""
+    NoseHooverThermostat(T, τ)
+
+Nose-Hoover thermostat targeting temperature `T` with relaxation time `τ`.
+"""
 struct NoseHooverThermostat{tType <: Real, τType <: Real} <: Thermostat
     T::tType
     τ::τType
@@ -54,6 +69,11 @@ function nosehoover_acceleration!(dv, u, v, ms, kb, N, Nc, ζind, p::NoseHooverT
     #v[ζind] = inv(p.Q) * ( sum(dot(ms, vec(sum(v[:,1:N].^2, 1)))) - (3 * N - Nc) * kb * p.T)
 end
 
+"""
+    LangevinThermostat(T, γ)
+
+Langevin thermostat targeting temperature `T` with friction coefficient `γ`.
+"""
 struct LangevinThermostat{tType <: Real, gType <: Real} <: Thermostat
     T::tType
     γ::gType
