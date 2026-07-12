@@ -1,5 +1,34 @@
 """
-The potentials or force field determines the interaction of particles and, therefore, their acceleration.
+    PotentialParameters
+
+Abstract interface for potential or force-field parameter types.
+
+`PotentialParameters` subtypes describe one interaction law in a
+[`PotentialNBodySystem`](@ref). Built-in subtypes include Lennard-Jones,
+electrostatic, magnetostatic, gravitational, and SPC/Fw water-model parameters.
+
+# Interface
+
+- Subtypes should be immutable parameter containers.
+- To participate in time stepping, define
+  [`get_accelerating_function(parameters, simulation)`](@ref).
+- The returned acceleration function must support
+  `acceleration!(dv, u, v, t, i)`, mutate only `dv`, and compute the acceleration
+  contribution for coordinate index `i`.
+- `u` and `v` are `3 x n` coordinate and velocity arrays. Implementations should not
+  assume `Array`; use indexing, broadcasting, and `eltype` generically where possible.
+
+# Examples
+
+```julia
+struct ConstantAcceleration <: PotentialParameters
+    a::Float64
+end
+
+function NBodySimulator.get_accelerating_function(p::ConstantAcceleration, simulation)
+    return (dv, u, v, t, i) -> (dv .= (p.a, 0, 0))
+end
+```
 """
 abstract type PotentialParameters end
 

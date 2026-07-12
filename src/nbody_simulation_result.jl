@@ -727,6 +727,20 @@ function write_pdb_data(f::IO, sr::SimulationResult)
     return
 end
 
+"""
+    save_to_pdb(result::SimulationResult, path)
+
+Write a simulation result to a Protein Data Bank (PDB) file.
+
+# Arguments
+
+- `result::SimulationResult`: Simulation result to serialize.
+- `path`: File path passed to `open(path, "w")`.
+
+# Returns
+
+- `Nothing`: The file is written for its side effect.
+"""
 function save_to_pdb(sr::SimulationResult, f)
     return open(f, "w") do s
         write_pdb_data(s, sr)

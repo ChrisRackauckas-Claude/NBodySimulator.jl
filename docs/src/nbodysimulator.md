@@ -52,6 +52,7 @@ InfiniteBox
 
 ```@docs
 PotentialNBodySystem
+ChargedParticles
 GravitationalSystem
 WaterSPCFw
 ```
@@ -77,8 +78,4 @@ total_energy
 ```@docs
 load_water_molecules_from_pdb
 save_to_pdb
-```
-
-```@autodocs
-Modules = [NBodySimulator]
 ```
