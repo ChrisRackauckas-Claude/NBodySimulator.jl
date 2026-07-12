@@ -28,6 +28,14 @@ p2 = MassBody(SVector(-1, 0.0, 0.0), SVector(0.0, 0.0, 0.0), m2)
 parameters = CustomPotentialParameters(1.5)
 system = PotentialNBodySystem([p1, p2], Dict(:custom_potential_params => parameters))
 simulation = NBodySimulation(system, (t1, t2))
+
+acceleration! = get_accelerating_function(parameters, simulation)
+dv = zeros(3)
+u = reduce(hcat, (p1.r, p2.r))
+v = reduce(hcat, (p1.v, p2.v))
+acceleration!(dv, u, v, t1, 1)
+@test dv == [1.5, 0.0, 0.0]
+
 simResult = run_simulation(simulation, VelocityVerlet(), dt = τ)
 
 v2 = get_velocity(simResult, t2, 1)

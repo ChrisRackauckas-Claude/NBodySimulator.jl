@@ -107,6 +107,52 @@ function gather_group_accelerations(simulation::NBodySimulation{<:WaterSPCFw})
     return accelerations
 end
 
+"""
+    get_accelerating_function(parameters::PotentialParameters, simulation::NBodySimulation)
+
+Return the acceleration kernel for a potential parameter object and simulation.
+
+This is the extension interface used by [`PotentialNBodySystem`](@ref) when converting
+an [`NBodySimulation`](@ref) to an ODE problem. Package users can add custom potentials
+by subtyping [`PotentialParameters`](@ref) and defining this method for their subtype.
+
+# Arguments
+
+- `parameters::PotentialParameters`: Interaction parameters for one potential.
+- `simulation::NBodySimulation`: Simulation containing bodies, boundary conditions,
+  thermostat, and physical constants.
+
+# Returns
+
+- `acceleration!`: A callable with signature `acceleration!(dv, u, v, t, i)`.
+
+# Interface
+
+- `acceleration!` must mutate `dv` with the acceleration contribution for coordinate
+  index `i`.
+- `acceleration!` must treat `u` and `v` as read-only.
+- `u` and `v` are `3 x n` coordinate and velocity arrays. Implementations should
+  preserve the element type of `dv`, `u`, and `v` where possible.
+- The method may close over precomputed constants from `parameters` and `simulation`,
+  but it should not mutate `simulation`.
+
+# Examples
+
+```julia
+using NBodySimulator, StaticArrays
+
+struct ConstantAcceleration <: PotentialParameters
+    a::Float64
+end
+
+function NBodySimulator.get_accelerating_function(
+        p::ConstantAcceleration,
+        simulation::NBodySimulation
+    )
+    return (dv, u, v, t, i) -> (dv .= SVector(p.a, 0.0, 0.0))
+end
+```
+"""
 function get_accelerating_function(
         parameters::LennardJonesParameters,
         simulation::NBodySimulation

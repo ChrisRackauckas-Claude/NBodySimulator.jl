@@ -1,5 +1,10 @@
 abstract type BoundaryConditions end
 
+"""
+    PeriodicBoundaryConditions(boundary)
+
+Periodic boundary conditions over explicit lower and upper bounds for each coordinate.
+"""
 struct PeriodicBoundaryConditions{cType <: Real} <: BoundaryConditions
     boundary::SVector{6, cType}
 end
@@ -26,6 +31,11 @@ function Base.getindex(pbc::PeriodicBoundaryConditions, i::Integer)
     return pbc.boundary[i]
 end
 
+"""
+    InfiniteBox()
+
+Boundary condition representing an unbounded three-dimensional domain.
+"""
 struct InfiniteBox{cType <: Real} <: BoundaryConditions
     boundary::SVector{6, <:cType}
 end
@@ -38,6 +48,11 @@ function Base.show(io::IO, bc::InfiniteBox{cType}) where {cType}
     return print(io, ")")
 end
 
+"""
+    CubicPeriodicBoundaryConditions(L)
+
+Periodic cubic boundary condition with side length `L`.
+"""
 struct CubicPeriodicBoundaryConditions{cType <: Real} <: BoundaryConditions
     L::cType
 end

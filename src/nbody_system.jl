@@ -6,11 +6,21 @@ abstract type NBodySystem end
 
 abstract type BasicPotentialSystem <: NBodySystem end
 
+"""
+    ChargedParticles(bodies, k)
+
+System of charged particles interacting through an electrostatic constant `k`.
+"""
 struct ChargedParticles{bType <: ChargedParticle, kType <: Real} <: BasicPotentialSystem
     bodies::Vector{bType}
     k::kType
 end
 
+"""
+    GravitationalSystem(bodies, G)
+
+System of massive particles interacting through gravitational constant `G`.
+"""
 struct GravitationalSystem{bType <: MassBody, gType <: Real} <: BasicPotentialSystem
     bodies::Vector{bType}
     G::gType
@@ -82,6 +92,11 @@ function PotentialNBodySystem(system::GravitationalSystem)
     return PotentialNBodySystem(system.bodies, potential)
 end
 
+"""
+    WaterSPCFw(bodies, mH, mO, qH, qO, lj_parameters, e_parameters, scpfw_parameters)
+
+System representation for SPC/Fw water molecules and their interaction parameters.
+"""
 struct WaterSPCFw{bType <: Body, pType <: Real} <: NBodySystem
     bodies::Vector{bType}
     mH::pType

@@ -52,6 +52,7 @@ InfiniteBox
 
 ```@docs
 PotentialNBodySystem
+ChargedParticles
 GravitationalSystem
 WaterSPCFw
 ```
@@ -60,6 +61,9 @@ WaterSPCFw
 
 ```@docs
 NBodySimulator.SimulationResult
+get_position
+get_velocity
+get_masses
 temperature
 rdf
 msd
